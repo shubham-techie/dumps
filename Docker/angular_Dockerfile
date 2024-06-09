@@ -1,0 +1,18 @@
+FROM node:18-alpine
+WORKDIR /app
+COPY /frontend .
+RUN npm install -g @angular/cli@17 && npm install -g http-server
+RUN npm install && npm run build
+
+# option-1
+# CMD ng serve --host 0.0.0.0 --port 8080
+
+# option-2
+# CMD http-server dist/frontend/browser
+
+# option-3
+WORKDIR /dist
+RUN cp -r /app/dist/frontend/browser/* . && rm -r /app/
+CMD  http-server
+
+EXPOSE 8080
